@@ -13,5 +13,6 @@ class Post extends Model
         'title',
         'body',
         'user_id',
+        'user_name'
     ];
 }

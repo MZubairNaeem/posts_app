@@ -40,6 +40,14 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="m-3">
+                                    <label for="user" class="col-md-4 col-form-label text-md-end px-4">Select user for this post</label>
+                                    <select class="form-control" name="user_name" id="user">
+                                        @foreach ($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                       @endforeach
+                                    </select>
+                                </div>
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn btn-primary">

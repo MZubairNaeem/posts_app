@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,23 +26,26 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = Post::all()->where('user_id', auth()->id());
+        $posts = Post::all()->where('user_name', auth()->id());
         return view('post.home',compact('posts'));
     }
     public function post_create()
     {
         $post = Post::where('user_id', auth()->id())->get();
-        return view('post.create-post',compact('post'));
+        $users = User::all();
+        return view('post.create-post',compact('post','users'));
     }
     public function post_store(Request $request)
     {
         $request->validate([
             'title' => 'required',
             'body' => 'required',
+            
         ]);
         $post = new Post();
         $post->title = $request->title;
         $post->body = $request->body;
+        $post->user_name = $request->user_name;
         $post->user_id = Auth::user()->id;
         $post->save();
         return redirect()->route('home');
@@ -57,13 +61,15 @@ class HomeController extends Controller
     {
         $id = decrypt($id);
         $post = Post::find($id);
-        return view('post.update-post',compact('post'));
+        $users = User::all();
+        return view('post.update-post',compact('post','users'));
     }
     public function post_update(Request $request,$id)
     {
         $post = Post::find($id);
         $post->title = $request->title;
         $post->body = $request->body;
+        $post->user_name = $request->user_name;
         $post->save();
         return redirect()->route('home');
     }
